@@ -1,0 +1,328 @@
+package com.example.calculatorapp
+
+import android.graphics.Color
+import android.os.Bundle
+import android.view.View
+import android.widget.Button
+import android.widget.ImageButton
+import android.widget.LinearLayout
+import android.widget.TextView
+import android.widget.Toast
+import androidx.activity.enableEdgeToEdge
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import com.example.calculatorapp.databinding.ActivityMainBinding
+import java.lang.Math.sqrt
+
+class MainActivity : AppCompatActivity(), View.OnClickListener {
+
+    //Intitialize viewBinding
+    private lateinit var binding : ActivityMainBinding
+
+    lateinit var outputText : TextView
+
+
+    lateinit var CEBtn : Button
+    lateinit var CBtn : Button
+    lateinit var squareRootBtn : Button
+    lateinit var divideBtn : Button
+    lateinit var timesBtn : Button
+    lateinit var minusBtn : Button
+    lateinit var plusBtn : Button
+    lateinit var equalsBtn : Button
+    lateinit var signBtn : Button
+    lateinit var decimalBtn : Button
+
+    lateinit var oneBtn : Button
+    lateinit var twoBtn : Button
+    lateinit var threeBtn : Button
+    lateinit var fourBtn : Button
+    lateinit var fiveBtn : Button
+    lateinit var sixBtn : Button
+    lateinit var sevenBtn : Button
+    lateinit var eightBtn : Button
+    lateinit var nineBtn : Button
+    lateinit var zeroBtn : Button
+    lateinit var powerBtn : ImageButton
+
+    lateinit var outputLayout : LinearLayout
+
+    var tempText = ""
+
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
+        setContentView(R.layout.activity_main)
+
+        outputText = findViewById(R.id.outputText)
+
+        powerBtn = findViewById(R.id.power_btn)
+
+        outputLayout = findViewById(R.id.output_layout)
+
+        //Shortcut for the code below
+        val buttons = listOf(
+            R.id.one_btn, R.id.two_btn, R.id.three_btn, R.id.four_btn, R.id.five_btn,
+            R.id.six_btn, R.id.seven_btn, R.id.eight_btn, R.id.nine_btn, R.id.zero_btn,
+            R.id.decimal_btn, R.id.ce_btn, R.id.c_btn, R.id.squareRoot_btn,
+            R.id.divide_btn, R.id.times_btn, R.id.minus_btn, R.id.plus_btn, R.id.equals_btn, R.id.sign_btn
+        )
+
+        buttons.forEach { id -> findViewById<Button>(id).setOnClickListener(this) }
+
+        // Disable calculator buttons
+        buttons.forEach { id -> findViewById<Button>(id).isEnabled = false}
+
+        /*
+        CEBtn = findViewById(R.id.ce_btn)
+        CBtn = findViewById(R.id.c_btn)
+        squareRootBtn = findViewById(R.id.squareRoot_btn)
+        divideBtn = findViewById(R.id.divide_btn)
+        timesBtn = findViewById(R.id.times_btn)
+        minusBtn = findViewById(R.id.minus_btn)
+        plusBtn = findViewById(R.id.plus_btn)
+        equalsBtn = findViewById(R.id.equals_btn)
+        signBtn = findViewById(R.id.sign_btn)
+        decimalBtn = findViewById(R.id.decimal_btn)
+        */
+
+
+        /*
+        CEBtn.setOnClickListener(this)
+        CBtn.setOnClickListener(this)
+        squareRootBtn.setOnClickListener(this)
+        divideBtn.setOnClickListener(this)
+        timesBtn.setOnClickListener(this)
+        minusBtn.setOnClickListener(this)
+        plusBtn.setOnClickListener(this)
+        equalsBtn.setOnClickListener(this)
+        signBtn.setOnClickListener(this)
+        decimalBtn.setOnClickListener(this)
+        */
+
+        var isCalculatorOn = false // Track the state
+
+        powerBtn.setOnClickListener {
+            if (!isCalculatorOn) {
+                // Turning on
+                Toast.makeText(this, "Turning Calculator On", Toast.LENGTH_LONG).show()
+                outputLayout.setBackgroundResource(R.drawable.border)
+
+                // Enable Calculator Buttons
+                buttons.forEach { id -> findViewById<Button>(id).isEnabled = true}
+            } else {
+                // Turning off
+                tempText = ""
+                outputText.text = tempText
+                Toast.makeText(this, "Turning Calculator Off", Toast.LENGTH_LONG).show()
+                outputLayout.setBackgroundResource(R.drawable.offstate_layout) // Reset background
+
+                // Disable calculator buttons
+                buttons.forEach { id -> findViewById<Button>(id).isEnabled = false}
+            }
+            isCalculatorOn = !isCalculatorOn // Toggle state
+        }
+
+
+
+        //-------------------------------------------------------------------------------------//
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+            insets
+        }
+    }
+
+    override fun onClick(v: View?) {
+        when(v?.id) {
+
+            //Numbers
+            R.id.one_btn -> {
+                tempText += 1
+                outputText.text = tempText
+            }
+
+            R.id.two_btn -> {
+                tempText += 2
+                outputText.text = tempText
+            }
+
+            R.id.three_btn -> {
+                tempText += 3
+                outputText.text = tempText
+            }
+
+            R.id.four_btn -> {
+                tempText += 4
+                outputText.text = tempText
+            }
+
+            R.id.five_btn -> {
+                tempText += 5
+                outputText.text = tempText
+            }
+
+            R.id.six_btn -> {
+                tempText += 6
+                outputText.text = tempText
+            }
+
+            R.id.seven_btn -> {
+                tempText += 7
+                outputText.text = tempText
+            }
+
+            R.id.eight_btn -> {
+                tempText += 8
+                outputText.text = tempText
+            }
+
+            R.id.nine_btn -> {
+                tempText += 9
+                outputText.text = tempText
+            }
+
+            R.id.zero_btn -> {
+                tempText += 0
+                outputText.text = tempText
+            }
+
+            R.id.decimal_btn -> {
+                tempText += "."
+                outputText.text = tempText
+            }
+
+            //Operations
+            R.id.ce_btn -> {
+                tempText = ""
+                outputText.text = tempText
+            }
+
+            R.id.c_btn -> {
+                tempText = tempText.dropLast(1)
+                outputText.text = tempText
+            }
+
+            R.id.squareRoot_btn -> {
+                if(tempText == "") {
+                    Toast.makeText(this, "Enter a number first", Toast.LENGTH_LONG).show()
+                } else {
+                    tempText = sqrt(tempText.toDouble()).toString()
+                    outputText.text = tempText
+                }
+            }
+
+            //Basic operations
+            R.id.divide_btn -> {
+                if(tempText == "" || tempText.last() == '+' || tempText.last() == '-' || tempText.last() == '*' || tempText.last() == '/') {
+                    Toast.makeText(this, "Invalid Input", Toast.LENGTH_LONG).show()
+                } else {
+                    tempText += "/"
+                    outputText.text = tempText
+                }
+
+            }
+
+            R.id.times_btn -> {
+                if(tempText == "" || tempText.last() == '+' || tempText.last() == '-' || tempText.last() == '*' || tempText.last() == '/') {
+                    Toast.makeText(this, "Invalid Input", Toast.LENGTH_LONG).show()
+                } else {
+                    tempText += "*"
+                    outputText.text = tempText
+                }
+            }
+
+            R.id.minus_btn -> {
+                if(tempText == "" || tempText.last() == '+' || tempText.last() == '-' || tempText.last() == '*' || tempText.last() == '/') {
+                    Toast.makeText(this, "Invalid Input", Toast.LENGTH_LONG).show()
+                } else {
+                    tempText += "-"
+                    outputText.text = tempText
+                }
+            }
+
+            R.id.plus_btn -> {
+                if(tempText == "" || tempText.last() == '+' || tempText.last() == '-' || tempText.last() == '*' || tempText.last() == '/') {
+                    Toast.makeText(this, "Invalid Input", Toast.LENGTH_LONG).show()
+                } else {
+                    tempText += "+"
+                    outputText.text = tempText
+                }
+            }
+
+            R.id.equals_btn -> {
+                tempText = evaluateExpression(tempText).toString()
+                outputText.text = evaluateExpression(tempText).toString()
+                //tempText = ""
+            }
+        }
+    }
+
+    fun evaluateExpression(expression: String): Double {
+        val numbers = mutableListOf<Double>()
+        val operators = mutableListOf<Char>()
+
+        var currentNumber = ""
+
+        for (char in expression) {
+            when {
+                char.isDigit() || char == '.' -> {
+                    currentNumber += char  // Build decimal numbers
+                }
+                char in "+-*/" -> {
+                    if (currentNumber.isNotEmpty()) {
+                        numbers.add(currentNumber.toDouble())
+                        currentNumber = ""
+                    }
+                    while (operators.isNotEmpty() && precedence(operators.last()) >= precedence(char)) {
+                        compute(numbers, operators)
+                    }
+                    operators.add(char)
+                }
+            }
+        }
+
+        // Add last number
+        if (currentNumber.isNotEmpty()) {
+            numbers.add(currentNumber.toDouble())
+        }
+
+        // Compute remaining operations
+        while (operators.isNotEmpty()) {
+            compute(numbers, operators)
+        }
+
+        return numbers.first()
+    }
+
+    fun precedence(op: Char): Int {
+        return when (op) {
+            '+', '-' -> 1
+            '*', '/' -> 2
+            else -> 0
+        }
+    }
+
+    fun compute(numbers: MutableList<Double>, operators: MutableList<Char>) {
+        if (numbers.size < 2 || operators.isEmpty()) return
+
+        val b = numbers.removeAt(numbers.lastIndex)  // Get second operand
+        val a = numbers.removeAt(numbers.lastIndex)  // Get first operand
+        val op = operators.removeAt(operators.lastIndex)  // ✅ Remove from `operators`, not `numbers`
+
+        val result = when (op) {
+            '+' -> a + b
+            '-' -> a - b
+            '*' -> a * b
+            '/' -> a / b
+            else -> 0.0
+        }
+
+        numbers.add(result)  // Push result back to numbers stack
+    }
+
+
+
+}
