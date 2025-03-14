@@ -99,6 +99,21 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             binding.outputText.text = tempText
         }
 
+        // Disable calculator buttons first
+        for(button in numberButtonList) {
+            button.isEnabled = false
+        }
+
+        for(button in operatorButtons) {
+            button.isEnabled = false
+        }
+
+        binding.ceBtn.isEnabled = false
+        binding.cBtn.isEnabled = false
+        binding.signBtn.isEnabled = false
+        binding.squareRootBtn.isEnabled = false
+        binding.equalsBtn.isEnabled = false
+
         //-----------------------------------------------//
 
         var isCalculatorOn = false // Track the state
